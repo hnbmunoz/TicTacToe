@@ -1,0 +1,14 @@
+.gamePanel {
+  border-radius: 0.63rem;
+  /* margin-bottom: 0.5rem; */
+}
+
+.gamePanel:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.gamePanel:active {
+  cursor: pointer;
+  transform: scale(1);
+}

@@ -1,0 +1,10 @@
+@import "./src/Styles/Components/tictactoe.css";
+@import "./src/Styles/Themes/arcade.css";
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  user-select: none;
+}
