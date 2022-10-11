@@ -29,7 +29,8 @@ const app = () => {
   });
 
   const handleResetGame = () => {
-    let allPanels = document.querySelectorAll("[data-gamePanel=gamePanel]");
+    // let allPanels = document.querySelectorAll("[data-gamePanel=gamePanel]");
+    let allPanels = document.querySelectorAll("[data-gamePanel]");
     [...allPanels].forEach((panels) => {
       panels.innerHTML = "";
     });
