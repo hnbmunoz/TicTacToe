@@ -51,10 +51,28 @@ const CheckVertical = (gameState) => {
   return verticalState
 };
 
+const MapInBoard = (lastIndexClicked, direction, arrIndex) => {
+  let mapDiretion = Object.keys( Object.fromEntries(Object.entries(direction).filter(([key, val]) => val === true)))[0];
+  let panelMaxIdx = document.querySelectorAll("[data-gamePanel=gamePanel]").length - 1;
+  if (mapDiretion = 'horizontal') {
+    // document.querySelector(`[data-panelidx='${lastIndexClicked}']`).style.backgroundColor = "red";
+  }
+  if (mapDiretion = 'vertical') {//+gameStateLength
+    // document.querySelector(`[data-panelidx='${lastIndexClicked}']`).style.backgroundColor = "red";
+  }
+  if (mapDiretion = 'cornerDiagonal') { //+gameStateLength +1
+    // document.querySelector(`[data-panelidx='${lastIndexClicked}']`).style.backgroundColor = "red";
+  }
+  if (mapDiretion = 'reverseDiagonal') {
+    // document.querySelector(`[data-panelidx='${lastIndexClicked}']`).style.backgroundColor = "red";
+  }
+}
+
 export {
   CreateElement,
   CheckHorizontal,
   CheckCornerDiagonal,
   CheckReverseDiagonal,
-  CheckVertical
+  CheckVertical,
+  MapInBoard
 };
