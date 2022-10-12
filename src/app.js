@@ -16,6 +16,7 @@ const app = () => {
   document.addEventListener("click", (e) => {
     if (e.target.dataset.button === "reset") {
       handleResetGame();
+      return;
     }
     if (isGameOver) return;
     if (e.target.dataset.gamepanel !== "gamePanel") return;
@@ -25,14 +26,15 @@ const app = () => {
     e.target.innerHTML = tag;
     isPlayer1 = !isPlayer1;
     gameState[e.target.dataset.row][e.target.dataset.col] = tag;
-    isGameOver = handleGameOver(gameState, tag, e.target.dataset.panelidx);
+    isGameOver = handleGameOver(gameState, tag, {row: e.target.dataset.row, col: e.target.dataset.col});
+    isDraw = handleDrawGame(gameState, isGameOver);
   });
 
   const handleResetGame = () => {
-    // let allPanels = document.querySelectorAll("[data-gamePanel=gamePanel]");
     let allPanels = document.querySelectorAll("[data-gamePanel]");
     [...allPanels].forEach((panels) => {
       panels.innerHTML = "";
+      panels.classList.remove('winningPanel')
     });
     isGameOver = false;
     isPlayer1 = true;
@@ -73,11 +75,22 @@ const handleGameOver = (gameState, player, lastIndexClicked) => {
   return isGameOver;
 };
 
+const handleDrawGame = (gameState, isGameOver) => {
+  let isDraw = true
+  gameState.forEach(arr => {
+    arr.forEach(val => {
+      if (val === "") {
+        isDraw = false;
+      }
+    })
+  })
+
+  isDraw && !isGameOver && alert ("Game is a draw")
+}
+
 const LoadGameContainer = (root) => {
   let gameContainer = Container();
-  try {
-    root.appendChild(gameContainer);
-  } catch {}
+  root.appendChild(gameContainer);
   return gameContainer;
 };
 
