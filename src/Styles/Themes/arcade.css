@@ -12,3 +12,8 @@
   cursor: pointer;
   transform: scale(1);
 }
+
+.winningPanel {
+  transform: scale(1.05);
+  background-color: red;
+}
