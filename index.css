@@ -7,4 +7,16 @@ body {
   justify-content: center;
   height: 100vh;
   user-select: none;
+  margin: 0;
+  padding: 0;
+}
+
+.flex-row {
+  display: flex;
+}
+
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
 }

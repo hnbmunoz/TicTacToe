@@ -1,7 +1,6 @@
 .tictactoe-container {
   display: grid;
-  grid-template-columns: repeat(3,6.8rem);
-  
+  grid-template-columns: repeat(3,6.8rem);  
   width: fit-content;  
   padding: 0;  
 }
@@ -18,4 +17,46 @@
   box-sizing: border-box;  
   align-items: center;
   justify-content: center;
+}
+
+.welcome-panel {
+  background-color: black;
+  background-color: #613a00;
+  background-image: url("https://transparenttextures.com/patterns/dark-wood.png");
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s;
+}
+
+.selection-container {  
+  align-items: center;  
+ 
+}
+
+.player-selection-title {
+  transform: rotate(2deg);
+  padding: 0.2rem 1.2rem;
+  border: none;
+  border-radius: 20% 5% 20% 5%/5% 20% 25% 20%;
+  background-color: #fdcb6e;
+  font-size: 2.5rem;
+  width: 150px;
+  font-family: "Architects Daughter", monospace;
+  color: #494a4b;
+}
+
+.player-selection {
+  border-radius: 0.4rem;
+  margin: 2rem;
+  height: 12.5rem;
+  width: 9.4rem;
+  font-size: 4.5rem;
+}
+
+.player-selection:hover {
+  cursor: pointer;
 }
