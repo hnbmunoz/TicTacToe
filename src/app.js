@@ -1,15 +1,17 @@
 import { Container, Panel, GameState } from "./Components/tictactoe.js";
+import { WelcomeScreen } from "./Components/welcome.js";
 import * as Utility from "../utilities/utility.js";
 import { ResetButton } from "./Components/controllers.js";
 import { PlayerX, PlayerO } from "./Components/users.js";
 
+let isPlayer1 = true;
 const app = () => {
   const root = document.getElementById("root");
   const App = Utility.CreateElement("div");
   App.classList.add("app");
   root?.appendChild(App);
 
-  let isPlayer1 = true;
+  
   let isGameOver = false;
   let gameState = GameState();
 
@@ -37,10 +39,25 @@ const app = () => {
       panels.classList.remove('winningPanel')
     });
     isGameOver = false;
-    isPlayer1 = true;
+    // isPlayer1 = true;
     gameState = GameState();
   };
 
+  const PlayerSelected = (data) => {
+
+    document.querySelector('.welcome-panel').style.transform = "translateY(-100vh)";
+
+    [...document.querySelector('.welcome-panel').children].forEach(el => {
+      el.style.transition = 'all 0.5s'
+      setTimeout( el.style.opacity = '0', 500)
+      setTimeout( el.style.display = 'none', 500)
+    });
+
+    data.player1 === "PlayerO" && (isPlayer1 = false);
+
+  }
+
+  WelcomeScreen(PlayerSelected)
   TicTacToeGame(App);
 };
 
