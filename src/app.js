@@ -5,12 +5,12 @@ import { ResetButton } from "./Components/controllers.js";
 import { PlayerX, PlayerO } from "./Components/users.js";
 
 let isPlayer1 = true;
+let player1 = 'PlayerX'
 const app = () => {
   const root = document.getElementById("root");
   const App = Utility.CreateElement("div");
   App.classList.add("app");
   root?.appendChild(App);
-
   
   let isGameOver = false;
   let gameState = GameState();
@@ -24,8 +24,15 @@ const app = () => {
     if (e.target.dataset.gamepanel !== "gamePanel") return;
     if (e.target.innerHTML.trim() !== "") return;
     let tag = "";
-    isPlayer1 ? (tag = "X") : (tag = "O");
-    e.target.innerHTML = tag;
+
+    if (player1 === 'PlayerX') {
+      isPlayer1 ? tag = PlayerX(e.target) : tag = PlayerO(e.target);
+    } 
+    
+    if (player1 === 'PlayerO') {
+      isPlayer1 ? tag = PlayerO(e.target) : tag = PlayerX(e.target);
+    }
+
     isPlayer1 = !isPlayer1;
     gameState[e.target.dataset.row][e.target.dataset.col] = tag;
     isGameOver = handleGameOver(gameState, tag, {row: e.target.dataset.row, col: e.target.dataset.col});
@@ -39,12 +46,11 @@ const app = () => {
       panels.classList.remove('winningPanel')
     });
     isGameOver = false;
-    // isPlayer1 = true;
+    isPlayer1 = true;
     gameState = GameState();
   };
 
   const PlayerSelected = (data) => {
-
     document.querySelector('.welcome-panel').style.transform = "translateY(-100vh)";
 
     [...document.querySelector('.welcome-panel').children].forEach(el => {
@@ -53,8 +59,7 @@ const app = () => {
       setTimeout( el.style.display = 'none', 500)
     });
 
-    data.player1 === "PlayerO" && (isPlayer1 = false);
-
+    player1 = data.player1
   }
 
   WelcomeScreen(PlayerSelected)
@@ -88,7 +93,6 @@ const handleGameOver = (gameState, player, lastIndexClicked) => {
       cornerDiagonal: Utility.CheckCornerDiagonal(gameState),
       reverseDiagonal: Utility.CheckReverseDiagonal(gameState),
     }, gameState);
-
   return isGameOver;
 };
 
@@ -101,7 +105,6 @@ const handleDrawGame = (gameState, isGameOver) => {
       }
     })
   })
-
   isDraw && !isGameOver && alert ("Game is a draw")
 }
 
@@ -115,7 +118,7 @@ const LoadGamePanel = (gameContainer, gameStateIdx, panelIdx) => {
   let gamePanel = Panel();
   gamePanel.setAttribute("data-row", `${gameStateIdx.rowIdx}`);
   gamePanel.setAttribute("data-col", `${gameStateIdx.colIdx}`);
-  gamePanel.setAttribute("data-panelIdx", `${panelIdx}`);
+  gamePanel.setAttribute("data-panelidx", `${panelIdx}`);
   gameContainer.appendChild(gamePanel);
   return gamePanel;
 };
@@ -128,4 +131,4 @@ const LoadGameController = (root) => {
   return gameController;
 };
 
-app();
+window.addEventListener('load', app, false);

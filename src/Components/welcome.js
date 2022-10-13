@@ -3,8 +3,7 @@ import { LoadPlayerSelection } from "./playerSelection.js";
 
 let vsMode = false;
 
-const WelcomeScreen = (PlayerSelected) => {
-    
+const WelcomeScreen = (PlayerSelected) => {    
   let showSelection  = false
   let welcome = CreateElement("div");
   welcome.classList.add("welcome-panel");
@@ -27,13 +26,11 @@ const WelcomeScreen = (PlayerSelected) => {
   welcome.appendChild(vsButton());  
   // showSelection && LoadPlayerSelection(welcome,PlayerSelected)
   document.querySelector('.game-mode').addEventListener('click', () => {
-    showSelection = !showSelection
-    if (showSelection) {
+    showSelection = !showSelection    
+    showSelection &&
       [...document.querySelectorAll('.game-mode')].forEach(buttons => buttons.remove())
-      LoadPlayerSelection(welcome, PlayerSelected, vsMode)
-    } 
+      LoadPlayerSelection(welcome, PlayerSelected, vsMode)     
   })
-
 };
 
 export { WelcomeScreen };
