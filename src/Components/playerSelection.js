@@ -1,7 +1,6 @@
 import { CreateElement } from "../../utilities/utility.js";
 
-const LoadPlayerSelection = (parent, PlayerSelected, vsMode) => {
-  
+const LoadPlayerSelection = (parent, PlayerSelected, vsMode) => {  
   let selectionContainer = CreateElement('div');
   selectionContainer.classList.add('selection-container')
   selectionContainer.classList.add("flex-column");
@@ -20,7 +19,6 @@ const PlayerSelection = (PlayerSelected, vsMode) => {
 
 const selectionTitle = () => {
   let div = CreateElement('div')
-
   let selectionTitle = CreateElement('label');
   selectionTitle.classList.add('player-selection-title');
   selectionTitle.innerHTML= "Select Player";
@@ -41,7 +39,6 @@ const playerO = (PlayerSelected, vsMode) => {
   playerO.classList.add('player-selection');
   playerO.innerHTML = "O";
   playerO.addEventListener('click', () => {PlayerSelected({mode: vsMode, player1: 'PlayerO'})})
-
   return playerO;
 };
 
