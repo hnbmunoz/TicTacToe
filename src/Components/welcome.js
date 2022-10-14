@@ -12,7 +12,8 @@ const WelcomeScreen = (PlayerSelected) => {
   const vsButton = () => {
     let vsButton = CreateElement("button");
     vsButton.innerHTML = "VS Mode";
-    vsButton.classList.add('game-mode')
+    vsButton.classList.add('game-mode');
+    vsButton.classList.add('controllerButton');
     vsMode = true
     return vsButton;
   };

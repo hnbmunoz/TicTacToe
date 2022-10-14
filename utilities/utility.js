@@ -47,6 +47,55 @@ const CheckVertical = (gameState) => {
   return verticalState
 };
 
+const CheckGameOver = (gameState, player, lastIndexClicked) => {
+  let isGameOver =
+    CheckHorizontal(gameState) ||
+    CheckCornerDiagonal(gameState) ||
+    CheckReverseDiagonal(gameState) ||
+    CheckVertical(gameState);
+
+  isGameOver && (document.getElementById('declaration').innerHTML = `${player} wins`);
+  isGameOver &&
+    MapInBoard(lastIndexClicked, {
+      horizontal: CheckHorizontal(gameState),
+      vertical: CheckVertical(gameState),
+      cornerDiagonal: CheckCornerDiagonal(gameState),
+      reverseDiagonal: CheckReverseDiagonal(gameState),
+    }, gameState);
+  
+  return isGameOver;
+};
+
+const CheckDrawGame = (gameState, isGameOver) => {
+  let isDraw = true
+  gameState.forEach(arr => {
+    arr.forEach(val => {
+      if (val === "") {
+        isDraw = false;
+      }
+    })
+  })
+  isDraw && !isGameOver && (document.getElementById('declaration').innerHTML = "Draw Game");
+  return isDraw
+}
+
+const CheckPrevMove = (moveRepo, currMove, gameState) => {
+  let newCurrMove = currMove ;
+  let cancelMove = moveRepo[newCurrMove];
+  document.querySelector(`[data-row='${cancelMove.row}'][data-col='${cancelMove.col}']`).innerHTML = "";
+  gameState[cancelMove.row][cancelMove.col] = ''
+  return { currMove: newCurrMove - 1 , state: gameState}
+};
+
+const CheckNextMove = (moveRepo, currMove, gameState) => {    
+  let newCurrMove = currMove + 1  
+  let recoverMove = moveRepo[newCurrMove];
+  document.querySelector(`[data-row='${recoverMove.row}'][data-col='${recoverMove.col}']`).innerHTML = `${recoverMove.player}`;
+  gameState[recoverMove.row][recoverMove.col] = `${recoverMove.player}`;
+  
+  return { currMove: newCurrMove , state: gameState}
+};
+
 const MapInBoard = (lastIndexClicked, direction, arrIndex) => {
   let mapDiretion = Object.keys( Object.fromEntries(Object.entries(direction).filter(([key, val]) => val === true)))[0];
   let panelMaxIdx = document.querySelectorAll("[data-gamePanel=gamePanel]").length - 1;
@@ -73,11 +122,42 @@ const MapInBoard = (lastIndexClicked, direction, arrIndex) => {
   }
 }
 
+const GameControllers = (moveRepo, currMove) => {
+  if (moveRepo.length > 0) {
+    document.querySelector(`[data-button='next']`).classList.remove('disabled-button')
+    document.querySelector(`[data-button='previous']`).classList.remove('disabled-button')
+
+    document.querySelector(`[data-button='next']`).dataset.disable = 'false'
+    document.querySelector(`[data-button='previous']`).dataset.disable = 'false'
+  }
+  if (currMove === 0) {
+    document.querySelector(`[data-button='previous']`).classList.add('disabled-button')
+    document.querySelector(`[data-button='previous']`).dataset.disable = 'true'
+  }
+
+  if (currMove === moveRepo.length - 1) {
+    document.querySelector(`[data-button='next']`).classList.add('disabled-button')
+    document.querySelector(`[data-button='next']`).dataset.disable = 'true'
+  }
+  if (moveRepo.length === 0) {
+    document.querySelector(`[data-button='next']`).classList.add('disabled-button')
+    document.querySelector(`[data-button='previous']`).classList.add('disabled-button')
+
+    document.querySelector(`[data-button='next']`).dataset.disable = 'true'
+    document.querySelector(`[data-button='previous']`).dataset.disable = 'true'
+  }
+}
+
 export {
   CreateElement,
   CheckHorizontal,
   CheckCornerDiagonal,
   CheckReverseDiagonal,
   CheckVertical,
-  MapInBoard
+  CheckGameOver,
+  CheckDrawGame,
+  CheckPrevMove,
+  CheckNextMove,
+  MapInBoard,
+  GameControllers
 };

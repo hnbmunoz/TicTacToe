@@ -1,0 +1,89 @@
+body {
+  background-color: black;
+  background-color: #613a00;
+  background-color: #915905;
+  background-image: url("https://transparenttextures.com/patterns/dark-wood.png");
+}
+
+.gameTitle {
+  transform: rotate(2deg);
+  padding: 0.2rem 1.2rem;
+  border: none;
+  border-radius: 20% 5% 20% 5%/5% 20% 25% 20%;
+  background-color: #fdcb6e;
+  font-size: 2.5rem;
+  width: fit-content;
+  font-family: "Architects Daughter", monospace;
+  color: #494a4b;
+  margin: 1.5rem;
+}
+
+
+.gameContainer {
+  margin: 0.5rem;  
+  font-family: "Architects Daughter", monospace;
+  color: #494a4b;
+}
+
+.gamePanel {
+  font-size: 3rem;  
+  border-width: 1px ;
+  border-style: double;
+  transition: all 0.4s; 
+  border-color: #1f1f1f;
+  color: #1f1f1f;
+  cursor:pointer;
+}
+
+.gameController {
+  margin: 1.5rem;
+  display: flex;
+  align-content: center;
+  justify-content: space-evenly;
+}
+
+.controllerButton {
+  border-radius: 3rem;
+  background-color: #2cbc3d;
+  color: #dadada;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 7rem;
+  height: 2rem;
+  margin-bottom: 0.5rem;
+  border: none;
+  filter: drop-shadow(2px 4px 6px black);
+  margin: 0.5rem
+}
+
+.controllerButton:hover {
+  cursor: pointer;
+  background-color: #27a736;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.controllerButton:active {
+  cursor: pointer;
+  background-color: #228e2e;
+  color: #fff;
+  transform: scale(1.0);
+}
+
+.gamePanel:hover {
+  cursor: pointer; 
+}
+
+.winningPanel {
+  color: #f1ff5c;
+  border-color: #f1ff5c;
+  border-width: 1px ;
+  border-style: solid;
+  font-size: 5rem;
+}
+
+#declaration {
+  font-family: "Architects Daughter", monospace;
+  color: #494a4b;
+  font-size: 2.5rem;
+}
