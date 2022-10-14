@@ -3,6 +3,7 @@ import { CreateElement } from "../../utilities/utility.js"
 const Container = () => {  
   let container = CreateElement('div')
   container.classList.add('tictactoe-container')
+  container.classList.add('gameContainer')
   return container
 }
 
