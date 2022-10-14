@@ -1,11 +1,13 @@
 import { Container, Panel, GameState } from "./Components/tictactoe.js";
 import { WelcomeScreen } from "./Components/welcome.js";
 import * as Utility from "../utilities/utility.js";
-import { ResetButton } from "./Components/controllers.js";
+import { ResetButton, PrevMoveButton, NextMoveButton } from "./Components/controllers.js";
 import { PlayerX, PlayerO } from "./Components/users.js";
 
 let isPlayer1 = true;
 let player1 = 'PlayerX'
+let moveRepo = [];
+let currMove = 0;
 const app = () => {
   const root = document.getElementById("root");
   const App = Utility.CreateElement("div");
@@ -20,6 +22,19 @@ const app = () => {
       handleResetGame();
       return;
     }
+    if (e.target.dataset.button === "previous") {
+      let currState = handlePrevMove(moveRepo, currMove, gameState);
+      currMove = currState.currMove;
+      gameState = currState.state
+      isPlayer1 = !isPlayer1;
+      return;
+    }
+    if (e.target.dataset.button === "next") {
+      let currState = handleNextMove(moveRepo, currMove, gameState);
+      currMove = currState.currMove;
+      gameState = currState.state
+      return;
+    }
     if (isGameOver) return;
     if (e.target.dataset.gamepanel !== "gamePanel") return;
     if (e.target.innerHTML.trim() !== "") return;
@@ -32,9 +47,11 @@ const app = () => {
     if (player1 === 'PlayerO') {
       isPlayer1 ? tag = PlayerO(e.target) : tag = PlayerX(e.target);
     }
-
+    
+    currMove += 1;
     isPlayer1 = !isPlayer1;
-    gameState[e.target.dataset.row][e.target.dataset.col] = tag;
+    gameState[e.target.dataset.row][e.target.dataset.col] = tag;    
+    moveRepo[currMove] = {row: e.target.dataset.row, col: e.target.dataset.col, player: tag, gameState }
     isGameOver = handleGameOver(gameState, tag, {row: e.target.dataset.row, col: e.target.dataset.col});
     isDraw = handleDrawGame(gameState, isGameOver);
   });
@@ -50,15 +67,29 @@ const app = () => {
     gameState = GameState();
   };
 
+  const handlePrevMove = (moveRepo, currMove, gameState) => {
+    let newCurrMove = currMove ;
+    let cancelMove = moveRepo[newCurrMove];
+    document.querySelector(`[data-row='${cancelMove.row}'][data-col='${cancelMove.col}']`).innerHTML = "";
+    gameState[cancelMove.row][cancelMove.col] = ''
+    return { currMove: newCurrMove - 1 , state: gameState}
+  };
+
+  const handleNextMove = (moveRepo, currMove, gameState) => {
+    let newCurrMove = currMove + 1  
+    let recoverMove = moveRepo[newCurrMove];
+    document.querySelector(`[data-row='${recoverMove.row}'][data-col='${recoverMove.col}']`).innerHTML = `${recoverMove.player}`;
+    gameState[recoverMove.row][recoverMove.col] = `${recoverMove.player}`;
+    return { currMove: newCurrMove , state: gameState}
+  };
+
   const PlayerSelected = (data) => {
     document.querySelector('.welcome-panel').style.transform = "translateY(-100vh)";
-
     [...document.querySelector('.welcome-panel').children].forEach(el => {
       el.style.transition = 'all 0.5s'
       setTimeout( el.style.opacity = '0', 500)
       setTimeout( el.style.display = 'none', 500)
     });
-
     player1 = data.player1
   }
 
@@ -125,7 +156,13 @@ const LoadGamePanel = (gameContainer, gameStateIdx, panelIdx) => {
 
 const LoadGameController = (root) => {
   let gameController = Utility.CreateElement("div");
+  gameController.classList.add("gameController")
+  let prevButton = PrevMoveButton();
+  let nextButton = NextMoveButton();
   let resetButton = ResetButton();
+
+  gameController.appendChild(prevButton);
+  gameController.appendChild(nextButton);
   gameController.appendChild(resetButton);
   root.appendChild(gameController);
   return gameController;

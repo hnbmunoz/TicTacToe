@@ -7,6 +7,22 @@ const ResetButton = () => {
   return resetButton
 }
 
+const PrevMoveButton = () => {
+  let prevButton = CreateElement('button');
+  prevButton.setAttribute('data-button','previous')
+  prevButton.innerHTML = "Prev";  
+  return prevButton
+}
+
+const NextMoveButton = () => {
+  let nextButton = CreateElement('button');
+  nextButton.setAttribute('data-button','next')
+  nextButton.innerHTML = "Next";  
+  return nextButton
+}
+
 export {
-  ResetButton
+  ResetButton,
+  PrevMoveButton,
+  NextMoveButton
 }
