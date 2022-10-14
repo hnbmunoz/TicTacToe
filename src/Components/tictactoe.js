@@ -15,6 +15,27 @@ const Panel = () => {
  return panel
 }
 
+const Title = () => {
+  let title = CreateElement('div')
+  let appTitle = CreateElement('label');
+  title.classList.add('gameTitle');
+  appTitle.innerHTML= "Tic Tac Toe";
+  title.appendChild(appTitle);
+  return title
+}
+
+const Annoucement = () => {
+  let announcement = CreateElement('div');
+  announcement.classList.add('announcement');
+
+  let gameAnnouncement = CreateElement('label');
+  gameAnnouncement.setAttribute('id','declaration');
+
+  announcement.classList.add('gameAnnouncement');
+  announcement.appendChild(gameAnnouncement);
+  return announcement
+}
+
 const GameState = () => {
   let gameArr = [
     ["","",""],
@@ -27,5 +48,7 @@ const GameState = () => {
 export {
   Container,
   Panel,
-  GameState   
+  GameState,
+  Title,
+  Annoucement   
 }

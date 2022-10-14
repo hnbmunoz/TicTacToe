@@ -12,6 +12,7 @@ const LoadPlayerSelection = (parent, PlayerSelected, vsMode) => {
 const PlayerSelection = (PlayerSelected, vsMode) => {
   let playerSelection = CreateElement('div');
   playerSelection.classList.add('player-selection-container');
+  playerSelection.classList.add('flex-row');
   playerSelection.appendChild(playerX(PlayerSelected, vsMode));
   playerSelection.appendChild(playerO(PlayerSelected, vsMode));
   return playerSelection;
@@ -27,19 +28,23 @@ const selectionTitle = () => {
 }
 
 const playerX = (PlayerSelected, vsMode) => {
+  let divX = CreateElement('div');  
   let playerX = CreateElement("button");
   playerX.classList.add('player-selection');
   playerX.innerHTML = "X";
   playerX.addEventListener('click', () => {PlayerSelected({mode: vsMode, player1: 'PlayerX'})})
-  return playerX;
+  divX.appendChild(playerX)
+  return divX;
 };
 
 const playerO = (PlayerSelected, vsMode) => {
+  let divO = CreateElement('div');
   let playerO = CreateElement("button");
   playerO.classList.add('player-selection');
   playerO.innerHTML = "O";
   playerO.addEventListener('click', () => {PlayerSelected({mode: vsMode, player1: 'PlayerO'})})
-  return playerO;
+  divO.appendChild(playerO)
+  return divO;
 };
 
 export {

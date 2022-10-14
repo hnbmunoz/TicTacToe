@@ -1,18 +1,15 @@
 .tictactoe-container {
   display: grid;
-  grid-template-columns: repeat(3,6.8rem);  
+  grid-template-columns: repeat(3,8rem);  
   width: fit-content;  
   padding: 0;  
 }
 
-.tictactoe-panel {
-  border: 1px solid olive;
-  background-color: olive;
-  height: 6.3rem;
-  width: 6.3rem;
+.tictactoe-panel {  
+  height: 8rem;
+  width: 8rem;
   display: flex;
   flex-direction: column;
-  margin: 0.3rem;
   padding: 0;
   box-sizing: border-box;  
   align-items: center;
@@ -23,6 +20,7 @@
 .welcome-panel {
   background-color: black;
   background-color: #613a00;
+  background-color: #915905;
   background-image: url("https://transparenttextures.com/patterns/dark-wood.png");
   position: absolute;
   width: 100%;
@@ -49,14 +47,42 @@
   color: #494a4b;
 }
 
-.player-selection {
-  border-radius: 0.4rem;
-  margin: 2rem;
-  height: 12.5rem;
-  width: 9.4rem;
-  font-size: 4.5rem;
+.player-selection-container {
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.player-selection {  
+  font-family: "Architects Daughter", monospace;  
+  font-size: 5rem;
+  border: none;
+  background-color: transparent;
+  color: #1f1f1f;
+  transition: all 0.5s;  
 }
 
 .player-selection:hover {
   cursor: pointer;
+  transform: scale(1.5);
+}
+
+.player-selection:active {
+  cursor: pointer;
+  transform: scale(0.8);
+}
+
+.disabled-button {
+  background-color: #878787 !important ;
+  color: #555555 !important;
+  cursor: text !important;
+}
+
+.disabled-button:hover {
+  cursor: text !important;
+  transform: scale(1) !important; 
+}
+
+.disabled-button:active {
+  cursor: text !important;
+  transform: scale(1) !important; 
 }

@@ -1,5 +1,5 @@
 @import "./src/Styles/Components/tictactoe.css";
-@import "./src/Styles/Themes/arcade.css";
+@import "./src/Styles/Themes/nature.css";
 
 body {
   display: flex;
@@ -11,10 +11,15 @@ body {
   padding: 0;
 }
 
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .flex-row {
   display: flex;
 }
-
 
 .flex-column {
   display: flex;

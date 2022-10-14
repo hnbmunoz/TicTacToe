@@ -1,4 +1,4 @@
-import { Container, Panel, GameState } from "./Components/tictactoe.js";
+import { Container, Panel, GameState, Title, Annoucement } from "./Components/tictactoe.js";
 import { WelcomeScreen } from "./Components/welcome.js";
 import * as Utility from "../utilities/utility.js";
 import { ResetButton, PrevMoveButton, NextMoveButton } from "./Components/controllers.js";
@@ -15,31 +15,36 @@ const app = () => {
   root?.appendChild(App);
   
   let isGameOver = false;
+  let isDraw = false;
   let gameState = GameState();
 
   document.addEventListener("click", (e) => {
+    if (e.target.dataset.disable === "true") return      
     if (e.target.dataset.button === "reset") {
-      handleResetGame();
+      gameState = handleResetGame();
+      Utility.GameControllers([], 0);
       return;
-    }
-    if (e.target.dataset.button === "previous") {
-      let currState = handlePrevMove(moveRepo, currMove, gameState);
+    }      
+    if (e.target.dataset.button === "previous") {      
+      let currState = Utility.CheckPrevMove(moveRepo, currMove, gameState);
       currMove = currState.currMove;
       gameState = currState.state
       isPlayer1 = !isPlayer1;
+      Utility.GameControllers(moveRepo, currMove);
       return;
     }
     if (e.target.dataset.button === "next") {
-      let currState = handleNextMove(moveRepo, currMove, gameState);
+      let currState = Utility.CheckNextMove(moveRepo, currMove, gameState);
       currMove = currState.currMove;
-      gameState = currState.state
+      gameState = currState.state;
+      isPlayer1 = !isPlayer1;
+      Utility.GameControllers(moveRepo, currMove);
       return;
     }
     if (isGameOver) return;
     if (e.target.dataset.gamepanel !== "gamePanel") return;
     if (e.target.innerHTML.trim() !== "") return;
     let tag = "";
-
     if (player1 === 'PlayerX') {
       isPlayer1 ? tag = PlayerX(e.target) : tag = PlayerO(e.target);
     } 
@@ -52,8 +57,12 @@ const app = () => {
     isPlayer1 = !isPlayer1;
     gameState[e.target.dataset.row][e.target.dataset.col] = tag;    
     moveRepo[currMove] = {row: e.target.dataset.row, col: e.target.dataset.col, player: tag, gameState }
-    isGameOver = handleGameOver(gameState, tag, {row: e.target.dataset.row, col: e.target.dataset.col});
-    isDraw = handleDrawGame(gameState, isGameOver);
+    Utility.GameControllers(moveRepo, currMove);
+    isGameOver = Utility.CheckGameOver(gameState, tag, {row: e.target.dataset.row, col: e.target.dataset.col});
+    isDraw = Utility.CheckDrawGame(gameState, isGameOver);
+    if (isGameOver || isDraw) {
+      Utility.GameControllers([], 0);
+    }
   });
 
   const handleResetGame = () => {
@@ -65,31 +74,12 @@ const app = () => {
     isGameOver = false;
     isPlayer1 = true;
     gameState = GameState();
-  };
-
-  const handlePrevMove = (moveRepo, currMove, gameState) => {
-    let newCurrMove = currMove ;
-    let cancelMove = moveRepo[newCurrMove];
-    document.querySelector(`[data-row='${cancelMove.row}'][data-col='${cancelMove.col}']`).innerHTML = "";
-    gameState[cancelMove.row][cancelMove.col] = ''
-    return { currMove: newCurrMove - 1 , state: gameState}
-  };
-
-  const handleNextMove = (moveRepo, currMove, gameState) => {
-    let newCurrMove = currMove + 1  
-    let recoverMove = moveRepo[newCurrMove];
-    document.querySelector(`[data-row='${recoverMove.row}'][data-col='${recoverMove.col}']`).innerHTML = `${recoverMove.player}`;
-    gameState[recoverMove.row][recoverMove.col] = `${recoverMove.player}`;
-    return { currMove: newCurrMove , state: gameState}
-  };
-
+    moveRepo = [];
+    document.getElementById('declaration').innerHTML = "";
+    return gameState;
+  };    
   const PlayerSelected = (data) => {
-    document.querySelector('.welcome-panel').style.transform = "translateY(-100vh)";
-    [...document.querySelector('.welcome-panel').children].forEach(el => {
-      el.style.transition = 'all 0.5s'
-      setTimeout( el.style.opacity = '0', 500)
-      setTimeout( el.style.display = 'none', 500)
-    });
+    document.querySelector('.welcome-panel').style.transform = "translateY(-100vh)";   
     player1 = data.player1
   }
 
@@ -98,6 +88,8 @@ const app = () => {
 };
 
 const TicTacToeGame = (App) => {
+  let gameTitle = LoadGameTitle(App);
+  let gameAnnoucement = LoadGameAnnouncement(App);
   let gameContainer = LoadGameContainer(App);
   let panelIdx = 0;
   GameState().forEach((arr, rowIdx) => {
@@ -109,35 +101,17 @@ const TicTacToeGame = (App) => {
   LoadGameController(App);
 };
 
-const handleGameOver = (gameState, player, lastIndexClicked) => {
-  let isGameOver =
-    Utility.CheckHorizontal(gameState) ||
-    Utility.CheckCornerDiagonal(gameState) ||
-    Utility.CheckReverseDiagonal(gameState) ||
-    Utility.CheckVertical(gameState);
-
-  isGameOver && alert(`${player} wins`);
-  isGameOver &&
-    Utility.MapInBoard(lastIndexClicked, {
-      horizontal: Utility.CheckHorizontal(gameState),
-      vertical: Utility.CheckVertical(gameState),
-      cornerDiagonal: Utility.CheckCornerDiagonal(gameState),
-      reverseDiagonal: Utility.CheckReverseDiagonal(gameState),
-    }, gameState);
-  return isGameOver;
+const LoadGameTitle = (root) => {
+  let gameTitle = Title();
+  root.appendChild(gameTitle);
+  return gameTitle;
 };
 
-const handleDrawGame = (gameState, isGameOver) => {
-  let isDraw = true
-  gameState.forEach(arr => {
-    arr.forEach(val => {
-      if (val === "") {
-        isDraw = false;
-      }
-    })
-  })
-  isDraw && !isGameOver && alert ("Game is a draw")
-}
+const LoadGameAnnouncement = (root) => {
+  let gameAnnoucement = Annoucement();
+  root.appendChild(gameAnnoucement);
+  return gameAnnoucement;
+};
 
 const LoadGameContainer = (root) => {
   let gameContainer = Container();
@@ -157,8 +131,15 @@ const LoadGamePanel = (gameContainer, gameStateIdx, panelIdx) => {
 const LoadGameController = (root) => {
   let gameController = Utility.CreateElement("div");
   gameController.classList.add("gameController")
+
   let prevButton = PrevMoveButton();
+  prevButton.classList.add('disabled-button');
+  prevButton.setAttribute('data-disable','true');
+
   let nextButton = NextMoveButton();
+  nextButton.classList.add('disabled-button');
+  nextButton.setAttribute('data-disable','true');
+
   let resetButton = ResetButton();
 
   gameController.appendChild(prevButton);
