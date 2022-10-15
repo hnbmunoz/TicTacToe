@@ -14,24 +14,28 @@ const WelcomeScreen = (PlayerSelected) => {
     vsButton.innerHTML = "VS Mode";
     vsButton.classList.add('game-mode');
     vsButton.classList.add('controllerButton');
-    vsMode = true
+    vsButton.addEventListener('click',() => {ModeSelected(true)})
     return vsButton;
   };
 
   const aiButton = () => {
     let aiButton = CreateElement("button");
+    aiButton.classList.add('game-mode');
+    aiButton.classList.add('controllerButton');
     aiButton.innerHTML = "AI Mode";
+    aiButton.addEventListener('click',() => {ModeSelected(false)})
+
     return aiButton;
   };
 
   welcome.appendChild(vsButton());  
-  // showSelection && LoadPlayerSelection(welcome,PlayerSelected)
-  document.querySelector('.game-mode').addEventListener('click', () => {
+  welcome.appendChild(aiButton());  
+  const ModeSelected = (vsMode) => {
     showSelection = !showSelection    
     showSelection &&
       [...document.querySelectorAll('.game-mode')].forEach(buttons => buttons.remove())
       LoadPlayerSelection(welcome, PlayerSelected, vsMode)     
-  })
+  }
 };
 
 export { WelcomeScreen };

@@ -1,6 +1,6 @@
 import { CreateElement } from "../../utilities/utility.js";
 
-const LoadPlayerSelection = (parent, PlayerSelected, vsMode) => {  
+const LoadPlayerSelection = (parent, PlayerSelected, vsMode) => {
   let selectionContainer = CreateElement('div');
   selectionContainer.classList.add('selection-container')
   selectionContainer.classList.add("flex-column");
