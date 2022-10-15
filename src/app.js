@@ -3,11 +3,13 @@ import { WelcomeScreen } from "./Components/welcome.js";
 import * as Utility from "../utilities/utility.js";
 import { ResetButton, PrevMoveButton, NextMoveButton } from "./Components/controllers.js";
 import { PlayerX, PlayerO } from "./Components/users.js";
+import { AISelected } from "./Components/AI/ai.js"
 
 let isPlayer1 = true;
 let player1 = 'PlayerX'
 let moveRepo = [];
 let currMove = 0;
+let vsMode = false;
 const app = () => {
   const root = document.getElementById("root");
   const App = Utility.CreateElement("div");
@@ -63,6 +65,26 @@ const app = () => {
     if (isGameOver || isDraw) {
       Utility.GameControllers([], 0);
     }
+
+    if (!vsMode) {      
+      // 
+      // alert('test')
+      let AITarget = AISelected(gameState)
+
+      let targetPanel = document.querySelector(`[data-row='${AITarget.row}'][data-col='${AITarget.col}']`)
+  
+      if (player1 === 'PlayerX') {
+        isPlayer1 ? tag = PlayerX(targetPanel) : tag = PlayerO(targetPanel);
+      } 
+      
+      if (player1 === 'PlayerO') {
+        isPlayer1 ? tag = PlayerO(targetPanel) : tag = PlayerX(targetPanel);
+      }
+      
+      gameState[AITarget.row][AITarget.col] = tag;
+      isPlayer1 = !isPlayer1;
+      return
+    }
   });
 
   const handleResetGame = () => {
@@ -81,6 +103,7 @@ const app = () => {
   const PlayerSelected = (data) => {
     document.querySelector('.welcome-panel').style.transform = "translateY(-100vh)";   
     player1 = data.player1
+    vsMode = data.mode
   }
 
   WelcomeScreen(PlayerSelected)
