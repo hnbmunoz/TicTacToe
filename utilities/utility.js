@@ -1,3 +1,5 @@
+import { PlayerX, PlayerO } from "../src/Components/users.js";
+
 const CreateElement = (element) => {
   let el = document.createElement(`${element}`);
   return el;
@@ -98,7 +100,6 @@ const CheckNextMove = (moveRepo, currMove, gameState) => {
 
 const MapInBoard = (lastIndexClicked, direction, arrIndex) => {
   let mapDiretion = Object.keys( Object.fromEntries(Object.entries(direction).filter(([key, val]) => val === true)))[0];
-  let panelMaxIdx = document.querySelectorAll("[data-gamePanel=gamePanel]").length - 1;
   if (mapDiretion === 'horizontal') {
     [...document.querySelectorAll(`[data-row='${lastIndexClicked.row}']`)].forEach(panel => {
       panel.classList.add('winningPanel')
@@ -112,7 +113,6 @@ const MapInBoard = (lastIndexClicked, direction, arrIndex) => {
   if (mapDiretion === 'cornerDiagonal') { 
     arrIndex.forEach((arr, rowIdx) => {     
       document.querySelector(`[data-row='${rowIdx}'][data-col='${rowIdx}']`).classList.add('winningPanel');
-
     })
   }
   if (mapDiretion === 'reverseDiagonal') {
@@ -122,7 +122,28 @@ const MapInBoard = (lastIndexClicked, direction, arrIndex) => {
   }
 }
 
-const GameControllers = (moveRepo, currMove) => {
+const MapInPanel = (isPlayer1, player1, panelTarget) => {  
+  let tag = "";
+  if (player1 === 'PlayerX') {
+    isPlayer1 ? tag = PlayerX(panelTarget) : tag = PlayerO(panelTarget);
+  }   
+  if (player1 === 'PlayerO') {
+    isPlayer1 ? tag = PlayerO(panelTarget) : tag = PlayerX(panelTarget);
+  }
+  return tag
+}
+
+const ExecuteGameControllers = (action, moveRepo, currMove, gameState) => {
+  if (action === "previous") {
+    return CheckPrevMove(moveRepo, currMove, gameState);
+  }
+
+  if (action === "next") {
+    return CheckNextMove(moveRepo, currMove, gameState);
+  }
+}
+
+const EnableGameControllers = (moveRepo, currMove) => {
   if (moveRepo.length > 0) {
     document.querySelector(`[data-button='next']`).classList.remove('disabled-button')
     document.querySelector(`[data-button='previous']`).classList.remove('disabled-button')
@@ -148,16 +169,29 @@ const GameControllers = (moveRepo, currMove) => {
   }
 }
 
+const StoreGameMove = ( rowIdx, colIdx, tag, currMove, moveRepo) => {
+  moveRepo[currMove] = {row: rowIdx, col: colIdx, player: tag }  
+  return moveRepo
+}
+
+const ResetGameBoard = () => {
+  let allPanels = document.querySelectorAll("[data-gamePanel]");
+  [...allPanels].forEach((panels) => {
+    panels.innerHTML = "";
+    panels.classList.remove('winningPanel')
+  });
+  document.getElementById('declaration').innerHTML = "";
+}
+
 export {
-  CreateElement,
-  CheckHorizontal,
-  CheckCornerDiagonal,
-  CheckReverseDiagonal,
-  CheckVertical,
+  CreateElement,  
   CheckGameOver,
   CheckDrawGame,
   CheckPrevMove,
   CheckNextMove,
-  MapInBoard,
-  GameControllers
+  MapInPanel,
+  ExecuteGameControllers,
+  EnableGameControllers,
+  StoreGameMove,
+  ResetGameBoard
 };
