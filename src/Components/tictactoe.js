@@ -1,4 +1,5 @@
 import { CreateElement } from "../../utilities/utility.js"
+import { ResetButton, PrevMoveButton, NextMoveButton } from "./controllers.js"
 
 const Container = () => {  
   let container = CreateElement('div')
@@ -45,10 +46,63 @@ const GameState = () => {
   return gameArr
 }
 
-export {
-  Container,
-  Panel,
-  GameState,
-  Title,
-  Annoucement   
-}
+const LoadGameTitle = (root) => {
+  let gameTitle = Title();
+  root.appendChild(gameTitle);
+  return gameTitle;
+};
+
+const LoadGameAnnouncement = (root) => {
+  let gameAnnoucement = Annoucement();
+  root.appendChild(gameAnnoucement);
+  return gameAnnoucement;
+};
+
+const LoadGameContainer = (root) => {
+  let gameContainer = Container();
+  root.appendChild(gameContainer);
+  return gameContainer;
+};
+
+const LoadGamePanel = (gameContainer, gameStateIdx) => {
+  let gamePanel = Panel();
+  gamePanel.setAttribute("data-row", `${gameStateIdx.rowIdx}`);
+  gamePanel.setAttribute("data-col", `${gameStateIdx.colIdx}`);
+  gameContainer.appendChild(gamePanel);
+  return gamePanel;
+};
+
+const LoadGameController = (root) => {
+  let gameController = CreateElement("div");
+  gameController.classList.add("gameController")
+
+  let prevButton = PrevMoveButton();
+  prevButton.classList.add('disabled-button');
+  prevButton.setAttribute('data-disable','true');
+
+  let nextButton = NextMoveButton();
+  nextButton.classList.add('disabled-button');
+  nextButton.setAttribute('data-disable','true');
+
+  let resetButton = ResetButton();
+
+  gameController.appendChild(prevButton);
+  gameController.appendChild(nextButton);
+  gameController.appendChild(resetButton);
+  root.appendChild(gameController);
+  return gameController;
+};
+
+const InitializeTicTacToe = (App) => {
+  let gameTitle = LoadGameTitle(App);
+  let gameAnnoucement = LoadGameAnnouncement(App);
+  let gameContainer = LoadGameContainer(App);
+  GameState().forEach((arr, rowIdx) => {
+    arr.forEach((panel, colIdx) => {
+      LoadGamePanel(gameContainer, { rowIdx, colIdx });
+    });
+  });
+  LoadGameController(App);
+};
+
+export { GameState, InitializeTicTacToe }
