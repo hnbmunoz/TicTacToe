@@ -144,7 +144,8 @@ const ExecuteGameControllers = (action, moveRepo, currMove, gameState) => {
   }
 }
 
-const EnableGameControllers = (moveRepo, currMove) => {
+const EnableGameControllers = (moveRepo, currMove, vsMode) => {
+ 
   if (moveRepo.length > 0) {
     document.querySelector(`[data-button='next']`).classList.remove('disabled-button')
     document.querySelector(`[data-button='previous']`).classList.remove('disabled-button')
@@ -161,13 +162,13 @@ const EnableGameControllers = (moveRepo, currMove) => {
     document.querySelector(`[data-button='next']`).classList.add('disabled-button')
     document.querySelector(`[data-button='next']`).dataset.disable = 'true'
   }
-  if (moveRepo.length === 0) {
+  if (moveRepo.length === 0 || !vsMode) {
     document.querySelector(`[data-button='next']`).classList.add('disabled-button')
     document.querySelector(`[data-button='previous']`).classList.add('disabled-button')
 
     document.querySelector(`[data-button='next']`).dataset.disable = 'true'
     document.querySelector(`[data-button='previous']`).dataset.disable = 'true'
-  }
+  } 
 }
 
 const StoreGameMove = ( rowIdx, colIdx, tag, currMove, moveRepo) => {
@@ -185,7 +186,11 @@ const ResetGameBoard = () => {
 }
 
 export {
-  CreateElement,  
+  CreateElement,
+  CheckHorizontal,
+  CheckVertical,
+  CheckCornerDiagonal,
+  CheckReverseDiagonal,  
   CheckGameOver,
   CheckDrawGame,
   CheckPrevMove,

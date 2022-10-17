@@ -49,7 +49,7 @@ const app = () => {
     vsMode && (isPlayer1 = !isPlayer1);  
 
     moveRepo = Utility.StoreGameMove( e.target.dataset.row,  e.target.dataset.col, playerMove.tag , currMove, moveRepo);
-    Utility.EnableGameControllers(moveRepo, currMove);
+    Utility.EnableGameControllers(moveRepo, currMove, vsMode);
     isGameOver = Utility.CheckGameOver(gameState, playerMove.tag, {row: e.target.dataset.row, col: e.target.dataset.col});
     isDraw = Utility.CheckDrawGame(gameState, isGameOver);
     (isGameOver || isDraw) && Utility.EnableGameControllers([], 0);
