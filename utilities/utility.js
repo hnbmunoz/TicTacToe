@@ -122,7 +122,7 @@ const MapInBoard = (lastIndexClicked, direction, arrIndex) => {
   }
 }
 
-const MapInPanel = (isPlayer1, player1, panelTarget) => {  
+const MapInPanel = (isPlayer1, player1, panelTarget, gameState) => {    
   let tag = "";
   if (player1 === 'PlayerX') {
     isPlayer1 ? tag = PlayerX(panelTarget) : tag = PlayerO(panelTarget);
@@ -130,7 +130,8 @@ const MapInPanel = (isPlayer1, player1, panelTarget) => {
   if (player1 === 'PlayerO') {
     isPlayer1 ? tag = PlayerO(panelTarget) : tag = PlayerX(panelTarget);
   }
-  return tag
+  gameState[panelTarget.dataset.row][panelTarget.dataset.col] = tag
+  return { currState: gameState, tag: tag}; 
 }
 
 const ExecuteGameControllers = (action, moveRepo, currMove, gameState) => {
