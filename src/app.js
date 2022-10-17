@@ -28,7 +28,7 @@ const app = () => {
       Utility.EnableGameControllers([], 0);
       return;
     }      
-    if (isGameOver) return;
+    if (document.querySelectorAll('.winningPanel').length > 0) return
 
     if (e.target.dataset.button === "previous" || e.target.dataset.button === "next") {     
       let currState = Utility.ExecuteGameControllers(e.target.dataset.button, moveRepo, currMove, gameState) 
@@ -44,23 +44,29 @@ const app = () => {
     if (e.target.innerHTML.trim() !== "") return; 
     
     currMove += 1;
-    let tag = Utility.MapInPanel(isPlayer1, player1, e.target);  
+    let playerMove = Utility.MapInPanel(isPlayer1, player1, e.target, gameState);  
+    gameState = playerMove.currState;
+    vsMode && (isPlayer1 = !isPlayer1);  
 
-    gameState[e.target.dataset.row][e.target.dataset.col] = tag;  
-    isPlayer1 = !isPlayer1;  
-    moveRepo = Utility.StoreGameMove( e.target.dataset.row,  e.target.dataset.col, tag , currMove, moveRepo)
+    moveRepo = Utility.StoreGameMove( e.target.dataset.row,  e.target.dataset.col, playerMove.tag , currMove, moveRepo);
     Utility.EnableGameControllers(moveRepo, currMove);
-    isGameOver = Utility.CheckGameOver(gameState, tag, {row: e.target.dataset.row, col: e.target.dataset.col});
+    isGameOver = Utility.CheckGameOver(gameState, playerMove.tag, {row: e.target.dataset.row, col: e.target.dataset.col});
     isDraw = Utility.CheckDrawGame(gameState, isGameOver);
     (isGameOver || isDraw) && Utility.EnableGameControllers([], 0);
 
-    !vsMode && AISelected(gameState)    
+    !vsMode && AIMove(gameState, isPlayer1, player1)  
+    
   });
    
   const PlayerSelected = (data) => {
     document.querySelector('.welcome-panel').style.transform = "translateY(-100vh)";   
     player1 = data.player1
     vsMode = data.mode
+  }
+
+  const AIMove = (gameState, isPlayer1, player1) => {
+    isPlayer1 = !isPlayer1;
+    AISelected(gameState, isPlayer1, player1)
   }
 
   WelcomeScreen(PlayerSelected)

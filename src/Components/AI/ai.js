@@ -1,28 +1,28 @@
 import * as Utility from "../../../utilities/utility.js";
 
+const AISelected = (gameState, isPlayer1, player1 ) => {  
 
-
-const AISelected = (gameState, ) => {  
-  let randomSlot = PickRandomSlot(gameState)  
-  // return randomSlots[randomSlots.length -1];
-  // return randomSlots
-  return randomSlot
+  Survive(gameState, !isPlayer1, !player1)
+  return gameState = PickRandomSlot(gameState, isPlayer1, player1)  
 }
-const PickRandomSlot = (gameState, panelSlot = [{}]) => {
-  let state = gameState
 
+const Survive = (gameState, isPlayer1, player1) => {
+  gameState.forEach((arr, rowIdx) => {
+    arr.forEach((val, colIdx) => {
+      
+    })
+  })
+}
+
+const PickRandomSlot = (gameState, isPlayer1, player1) => {  
   let randomRow = Math.floor(Math.random() * gameState.length)
   let randomCol = Math.floor(Math.random() * gameState[randomRow].length)
-  if (state[randomRow][randomCol] === "") {
-    return {row: randomRow, col: randomCol}
-    debugger
-    // alert('')
-    PickRandomSlot(state)   
-    
+  if (gameState[randomRow][randomCol] === "") {
+    let aiMove = Utility.MapInPanel(isPlayer1, player1,document.querySelector(`[data-row='${randomRow}'][data-col='${randomCol}']`), gameState)
+    Utility.CheckGameOver(gameState, aiMove.tag, {row: randomRow, col: randomCol});
   } else {
-    PickRandomSlot(state)  
+    PickRandomSlot(gameState, isPlayer1, player1)
   }
-  
 }
 
 export {
