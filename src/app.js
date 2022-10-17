@@ -1,7 +1,7 @@
 import { GameState, InitializeTicTacToe } from "./Components/tictactoe.js";
 import { WelcomeScreen } from "./Components/welcome.js";
 import * as Utility from "../utilities/utility.js";
-import { AISelected } from "./Components/AI/ai.js"
+import { AIPlayer } from "./Components/AI/ai.js"
 
 const app = () => {
   const root = document.getElementById("root");
@@ -65,8 +65,9 @@ const app = () => {
   }
 
   const AIMove = (gameState, isPlayer1, player1) => {
+    if (document.querySelectorAll('.winningPanel').length > 0) return
     isPlayer1 = !isPlayer1;
-    AISelected(gameState, isPlayer1, player1)
+    AIPlayer(gameState, isPlayer1, player1)
   }
 
   WelcomeScreen(PlayerSelected)

@@ -1,49 +1,53 @@
 import * as Utility from "../../../utilities/utility.js";
 
-const AISelected = (gameState, isPlayer1, player1 ) => {  
-  
+const AIPlayer = (gameState, isPlayer1, player1 ) => {    
   let playerTag = AICheckPiece(!isPlayer1, player1)
   let aiTag = AICheckPiece(isPlayer1, player1)
 
-  // let pickCenter = PickCenterSlot(gameState, isPlayer1, player1);
-  // if (!pickCenter) {
-  //   PickRandomSlot(gameState, isPlayer1, player1)  
-  // }
+  let winGame = WinGame(gameState, aiTag, isPlayer1, player1)
+  if (winGame) return;
 
-  PickRandomSlot(gameState, isPlayer1, player1)  
+  let preventLoss = PreventLoss(gameState, playerTag, isPlayer1, player1)
+  if (preventLoss) return;
+
+  PickRandomSlot(gameState, isPlayer1, player1)    
 }
 
-const Survive = (gameState, playerTag, aiTag) => { 
-  const officialGameState = gameState 
-  let aiSimulatedGameState = officialGameState
+const PreventLoss = (gameState, playerTag, isPlayer1, player1) => {   
   let surviveNeeded = false
+  let goRandom = true
   gameState.forEach((arr, rowIdx) => {    
-    arr.forEach((val, colIdx) => {
-     
+    arr.forEach((val, colIdx) => {      
+      if (gameState[rowIdx][colIdx] === "" && goRandom) {
+        surviveNeeded = AICheckGameState(gameState, rowIdx, colIdx, playerTag)
+      }
+      if (surviveNeeded && goRandom) {
+        let aiMove = Utility.MapInPanel(isPlayer1, player1,document.querySelector(`[data-row='${rowIdx}'][data-col='${colIdx}']`), gameState)
+        Utility.CheckGameOver(gameState, aiMove.tag, {row: rowIdx, col: colIdx});
+        goRandom = false
+      }
     })
   })
-  return surviveNeeded
+  return !goRandom
 }
 
-const Kill = (gameState, playerTag, aiTag) => {
+const WinGame = (gameState,  aiTag, isPlayer1, player1) => {
+  let killTurn = false
+  let goRandom = true
   gameState.forEach((arr, rowIdx) => {
     arr.forEach((val, colIdx) => {
-      
+      if (gameState[rowIdx][colIdx] === "" && goRandom) {
+        killTurn = AICheckGameState(gameState, rowIdx, colIdx, aiTag)
+      }
+      debugger
+      if (killTurn && goRandom) {
+        let aiMove = Utility.MapInPanel(isPlayer1, player1,document.querySelector(`[data-row='${rowIdx}'][data-col='${colIdx}']`), gameState)
+        Utility.CheckGameOver(gameState, aiMove.tag, {row: rowIdx, col: colIdx});
+        goRandom = false
+      }
     })
   })
-}
-
-const PickCenterSlot = (gameState,  isPlayer1, player1) => {
-  let centerPick = false
-  let centerRow = Math.ceil(gameState.length / 2);
-  let centerCol = Math.ceil(gameState[centerRow].length / 2);
-
-  if (gameState[centerRow - 1][centerCol - 1] === "" && !isPlayer1) {
-    let aiMove = Utility.MapInPanel(isPlayer1, player1,document.querySelector(`[data-row='${centerRow -1}'][data-col='${centerCol -1}']`), gameState)
-    Utility.CheckGameOver(gameState, aiMove.tag, {row: centerRow, col: centerCol});
-    centerPick = true
-  }
-  return centerPick
+  return !goRandom
 }
 
 const PickRandomSlot = (gameState, isPlayer1, player1) => {  
@@ -57,7 +61,14 @@ const PickRandomSlot = (gameState, isPlayer1, player1) => {
   }
 }
 
-const AICheckGameState = (gameState) => {
+const AICheckGameState = (gameState, rowIdx, colIdx, playerTag) => {
+  gameState[rowIdx][colIdx] = playerTag;
+  let isGameOver =  AICheckGameOver(gameState) 
+  gameState[rowIdx][colIdx] = ""; 
+  return isGameOver
+}
+
+const AICheckGameOver = (gameState) => {
   let isGameOver =
     Utility.CheckHorizontal(gameState) ||
     Utility.CheckCornerDiagonal(gameState) ||
@@ -78,5 +89,5 @@ const AICheckPiece = (isPlayer1, player1) => {
 }
 
 export {
-  AISelected
+  AIPlayer
 }
