@@ -193,6 +193,14 @@ const DarkMode = () => {
       button.classList.toggle('dark-button')
   });
 
+  document.querySelectorAll('.tictactoe-panel ').forEach( panels => {
+    panels.classList.toggle('dark-panel')
+  });
+
+  document.querySelectorAll('.player-selection ').forEach( selection => {
+    selection.classList.toggle('dark-announcement')
+  });
+
   document.querySelector('.gameTitle').classList.toggle('dark-title')
   document.querySelector('#declaration').classList.toggle('dark-announcement')
   document.querySelector('.player-selection-title').classList.toggle('dark-title')
