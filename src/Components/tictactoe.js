@@ -93,6 +93,24 @@ const LoadGameController = (root) => {
   return gameController;
 };
 
+const RemoveTicTacToeEdges = (GameState) => {
+  document.querySelectorAll(`[data-row='0']`).forEach(panel => {
+    panel.style.borderTop = "none";
+  })
+
+  document.querySelectorAll(`[data-row='${GameState.length - 1}']`).forEach(panel => {
+    panel.style.borderBottom = "none";
+  })
+
+  document.querySelectorAll(`[data-col='0']`).forEach(panel => {
+    panel.style.borderLeft = "none";
+  })
+
+  document.querySelectorAll(`[data-col='${GameState.length - 1}']`).forEach(panel => {
+    panel.style.borderRight = "none";
+  })
+}
+
 const InitializeTicTacToe = (App) => {
   let gameTitle = LoadGameTitle(App);
   let gameAnnoucement = LoadGameAnnouncement(App);
@@ -102,6 +120,7 @@ const InitializeTicTacToe = (App) => {
       LoadGamePanel(gameContainer, { rowIdx, colIdx });
     });
   });
+  RemoveTicTacToeEdges(GameState());
   LoadGameController(App);
 };
 

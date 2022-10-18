@@ -1,0 +1,42 @@
+.slider-container {
+  position: absolute;
+  top: 0;
+  margin-top: 6.5rem;
+  margin-left: 46.5rem;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2cbc3d;
+  transition: .4s;
+  border-radius: 2.15rem;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.63rem;
+  width: 1.63rem;
+  left: 0.25rem;
+  bottom: 0.25rem;
+  background-color: #ccc;
+  border-radius: 50%;
+  transition: .4s;
+}
+
+.switch:checked + .slider {
+  background-color: #151b29;
+}
+
+.switch:focus + .slider {
+  box-shadow: 0 0 1px #151b29;
+}
+
+.switch:checked + .slider:before {
+  transform: translateX(1.63rem);
+}

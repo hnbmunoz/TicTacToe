@@ -21,8 +21,11 @@ const PlayerSelection = (PlayerSelected, vsMode) => {
 const selectionTitle = () => {
   let div = CreateElement('div')
   let selectionTitle = CreateElement('label');
-  selectionTitle.classList.add('player-selection-title');
+  selectionTitle.classList.add('player-selection-title');  
   selectionTitle.innerHTML= "Select Player";
+  if (document.getElementById('darkModeSlider').children.sliderElement.children.sliderSwitch.checked) {
+    selectionTitle.classList.add('dark-title');  
+  }
   div.appendChild(selectionTitle);
   return div
 }

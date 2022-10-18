@@ -1,8 +1,7 @@
-body {
-  background-color: black;
-  background-color: #613a00;
+body {  
   background-color: #915905;
   background-image: url("https://transparenttextures.com/patterns/dark-wood.png");
+  transition: all 0.4s;
 }
 
 .gameTitle {
@@ -16,8 +15,8 @@ body {
   font-family: "Architects Daughter", monospace;
   color: #494a4b;
   margin: 1.5rem;
+  transition: all 0.4s;
 }
-
 
 .gameContainer {
   margin: 0.5rem;  
@@ -75,10 +74,7 @@ body {
 }
 
 .winningPanel {
-  color: #f1ff5c;
-  border-color: #f1ff5c;
-  border-width: 1px ;
-  border-style: solid;
+  color: #f1ff5c; 
   font-size: 5rem;
 }
 
@@ -86,4 +82,5 @@ body {
   font-family: "Architects Daughter", monospace;
   color: #1f1f1f;
   font-size: 2.5rem;
+  transition: all 0.4s;
 }

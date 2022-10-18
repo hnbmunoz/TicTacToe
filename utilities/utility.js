@@ -162,7 +162,7 @@ const EnableGameControllers = (moveRepo, currMove, vsMode) => {
     document.querySelector(`[data-button='next']`).classList.add('disabled-button')
     document.querySelector(`[data-button='next']`).dataset.disable = 'true'
   }
-  if (moveRepo.length === 0 || !vsMode) {
+  if (moveRepo.length === 0 ) {
     document.querySelector(`[data-button='next']`).classList.add('disabled-button')
     document.querySelector(`[data-button='previous']`).classList.add('disabled-button')
 
@@ -185,6 +185,19 @@ const ResetGameBoard = () => {
   document.getElementById('declaration').innerHTML = "";
 }
 
+const DarkMode = () => {
+  document.querySelector('.welcome-panel').classList.toggle('dark-mode')
+  document.body.classList.toggle('dark-mode')
+
+  document.querySelectorAll('.controllerButton').forEach( button => {
+      button.classList.toggle('dark-button')
+  });
+
+  document.querySelector('.gameTitle').classList.toggle('dark-title')
+  document.querySelector('#declaration').classList.toggle('dark-announcement')
+  document.querySelector('.player-selection-title').classList.toggle('dark-title')
+}
+
 export {
   CreateElement,
   CheckHorizontal,
@@ -199,5 +212,6 @@ export {
   ExecuteGameControllers,
   EnableGameControllers,
   StoreGameMove,
-  ResetGameBoard
+  ResetGameBoard,
+  DarkMode
 };
