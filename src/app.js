@@ -2,6 +2,7 @@ import { GameState, InitializeTicTacToe } from "./Components/tictactoe.js";
 import { WelcomeScreen } from "./Components/welcome.js";
 import * as Utility from "../utilities/utility.js";
 import { AIPlayer } from "./Components/AI/ai.js"
+import Slider from "./Components/slider.js";
 
 const app = () => {
   const root = document.getElementById("root");
@@ -70,8 +71,15 @@ const app = () => {
     AIPlayer(gameState, isPlayer1, player1)
   }
 
+  const ToggleDarkMode = (e) => {    
+    Utility.DarkMode()    
+  }
+
   WelcomeScreen(PlayerSelected)
   InitializeTicTacToe(App);
+  let darkModeSlider = Slider(ToggleDarkMode)
+  darkModeSlider.setAttribute('id','darkModeSlider')
+  document.body.appendChild(darkModeSlider)
 };
 
 window.addEventListener('load', app, false);

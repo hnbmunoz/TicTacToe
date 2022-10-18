@@ -1,5 +1,8 @@
+@import "./src/Styles/Themes/darkmode.css";
 @import "./src/Styles/Components/tictactoe.css";
+@import "./src/Styles/Components/slider.css";
 @import "./src/Styles/Themes/nature.css";
+@import "./src/Styles/Themes/disable.css";
 
 body {
   display: flex;

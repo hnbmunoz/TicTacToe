@@ -18,14 +18,13 @@
 }
 
 .welcome-panel {
-  background-color: black;
-  background-color: #613a00;
   background-color: #915905;
   background-image: url("https://transparenttextures.com/patterns/dark-wood.png");
   position: absolute;
   width: 100%;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   transition: all 0.4s;
@@ -42,9 +41,10 @@
   border-radius: 20% 5% 20% 5%/5% 20% 25% 20%;
   background-color: #fdcb6e;
   font-size: 2.5rem;
-  width: 150px;
+  width: 9.4rem;
   font-family: "Architects Daughter", monospace;
   color: #494a4b;
+  transition: all 0.4s;
 }
 
 .player-selection-container {
@@ -71,18 +71,9 @@
   transform: scale(0.8);
 }
 
-.disabled-button {
-  background-color: #878787 !important ;
-  color: #555555 !important;
-  cursor: text !important;
-}
-
-.disabled-button:hover {
-  cursor: text !important;
-  transform: scale(1) !important; 
-}
-
-.disabled-button:active {
-  cursor: text !important;
-  transform: scale(1) !important; 
+.game-mode {
+  height: 4rem !important;
+  width: 10rem !important;
+  margin-bottom: 2rem !important;
+  font-size: 1.5rem !important;
 }

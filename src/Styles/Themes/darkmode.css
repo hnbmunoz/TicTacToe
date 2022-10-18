@@ -1,0 +1,42 @@
+.dark-mode {
+  background-color: #000 !important;
+  color: white !important;
+}
+
+.dark-title {
+  border-radius: 0.63rem !important;
+  font-family: serif !important;
+  transform: rotate(0deg) !important;
+  background-color: #000 !important;
+  transition: all 0.4s;
+}
+
+.dark-announcement {
+  font-family: serif !important;
+  transition: all 0.4s;
+}
+
+.dark-button {
+  background-color: #000 !important;
+  color: #494a4b !important;
+  padding: 0 !important;
+  transition: all 0.5s;
+}
+
+.dark-button:hover {
+  color: #fff !important;
+  border-color: #f1ff5c !important;
+  border-width: 2px !important;
+  border-style: solid !important;
+  transform: translateY(-0.3rem) !important;
+  box-shadow: 0 0.5rem 0.5rem -0.4rem #f1ff5c !important;
+}
+
+.dark-button:active {
+  color: #fff !important;
+  border-color: #f1ff5c !important;
+  border-width: 2px !important;
+  border-style: solid !important;
+  transform: translateY(0) !important;
+  box-shadow: 0 0.5rem 0.5rem -0.4rem #f1ff5c !important;
+}
