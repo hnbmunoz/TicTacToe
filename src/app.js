@@ -17,6 +17,8 @@ const app = () => {
   let player1 = 'PlayerX'
   let moveRepo = [];
   let currMove = 0;
+  let aiRepo = [];
+  let aiMove = 0;
   let vsMode = false;
 
   document.addEventListener("click", (e) => {
@@ -26,21 +28,29 @@ const app = () => {
       isPlayer1 = true;
       gameState = GameState();
       moveRepo = [];
-      Utility.EnableGameControllers([], 0);
+      aiRepo = [];
+      isDraw = false;
+      currMove = 0;
+      Utility.EnableGameControllers([], [], 0, vsMode);
       return;
     }      
-    if (document.querySelectorAll('.winningPanel').length > 0) return
+    if (document.querySelectorAll('.winningPanel').length > 0 || isDraw) return
+    
+    if (e.target.dataset.disable === "true") return
 
-    if (e.target.dataset.button === "previous" || e.target.dataset.button === "next") {     
-      let currState = Utility.ExecuteGameControllers(e.target.dataset.button, moveRepo, currMove, gameState) 
+    if (e.target.dataset.button === "previous" || e.target.dataset.button === "next") {           
+      let currState = Utility.ExecuteGameControllers(e.target.dataset.button, moveRepo, aiRepo, currMove, gameState, vsMode) 
       currMove = currState.currMove;
-      gameState = currState.state
-      isPlayer1 = !isPlayer1;
-      Utility.EnableGameControllers(moveRepo, currMove);
+      gameState = currState.state;
+      aiRepo = currState.aiRepo
+      vsMode && (isPlayer1 = !isPlayer1);
+      Utility.EnableGameControllers(moveRepo, aiRepo, currMove, vsMode);      
+      !vsMode && e.target.dataset.button === "next" && AIMove(gameState, isPlayer1, player1, aiRepo, currMove)
       return;
     }
 
     if (e.target.dataset.gamepanel !== "gamePanel") return;
+    e.target.dataset.emptypanel = false
 
     if (e.target.innerHTML.trim() !== "") return; 
     
@@ -50,12 +60,11 @@ const app = () => {
     vsMode && (isPlayer1 = !isPlayer1);  
 
     moveRepo = Utility.StoreGameMove( e.target.dataset.row,  e.target.dataset.col, playerMove.tag , currMove, moveRepo);
-    Utility.EnableGameControllers(moveRepo, currMove, vsMode);
-    isGameOver = Utility.CheckGameOver(gameState, playerMove.tag, {row: e.target.dataset.row, col: e.target.dataset.col});
-    isDraw = Utility.CheckDrawGame(gameState, isGameOver);
-    (isGameOver || isDraw) && Utility.EnableGameControllers([], 0);
+    Utility.EnableGameControllers(moveRepo, aiRepo, currMove, vsMode);
+    
+    CheckGameResult(playerMove.tag, e.target.dataset.row, e.target.dataset.col)
 
-    !vsMode && AIMove(gameState, isPlayer1, player1)  
+    !vsMode && AIMove(gameState, isPlayer1, player1, aiRepo, currMove)  
     
   });
    
@@ -65,14 +74,22 @@ const app = () => {
     vsMode = data.mode
   }
 
-  const AIMove = (gameState, isPlayer1, player1) => {
+  const AIMove = (gameState, isPlayer1, player1, repo, move) => {
     if (document.querySelectorAll('.winningPanel').length > 0) return
     isPlayer1 = !isPlayer1;
-    AIPlayer(gameState, isPlayer1, player1)
+    let ai = AIPlayer(gameState, isPlayer1, player1);
+    aiRepo = Utility.StoreGameMove( ai.row,  ai.col, ai.tag , move, repo);        
+    CheckGameResult(ai.tag, ai.row, ai.col)
   }
 
-  const ToggleDarkMode = (e) => {    
+  const ToggleDarkMode = () => {    
     Utility.DarkMode()    
+  }
+
+  const CheckGameResult = (tag, targetRow, targetColumn) => {
+    isGameOver = Utility.CheckGameOver(gameState, tag, {row: targetRow, col: targetColumn});
+    isDraw = Utility.CheckDrawGame(gameState, isGameOver);    
+    (isGameOver || isDraw) && Utility.EnableGameControllers([], [], 0, vsMode);
   }
 
   WelcomeScreen(PlayerSelected)
