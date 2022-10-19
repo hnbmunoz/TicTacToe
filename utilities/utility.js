@@ -81,21 +81,35 @@ const CheckDrawGame = (gameState, isGameOver) => {
   return isDraw
 }
 
-const CheckPrevMove = (moveRepo, currMove, gameState) => {
+const CheckPrevMove = (moveRepo, aiRepo, currMove, gameState, vsMode) => {  
   let newCurrMove = currMove ;
   let cancelMove = moveRepo[newCurrMove];
   document.querySelector(`[data-row='${cancelMove.row}'][data-col='${cancelMove.col}']`).innerHTML = "";
   gameState[cancelMove.row][cancelMove.col] = ''
-  return { currMove: newCurrMove - 1 , state: gameState}
+
+  if (!vsMode) {
+    let cancelAIMove = aiRepo[currMove];
+    document.querySelector(`[data-row='${cancelAIMove.row}'][data-col='${cancelAIMove.col}']`).innerHTML = "";
+    document.querySelector(`[data-row='${cancelAIMove.row}'][data-col='${cancelAIMove.col}']`).dataset.emptypanel = "true";
+    gameState[cancelAIMove.row][cancelAIMove.col] = ''
+    aiRepo.splice(-1)
+  }
+  return { currMove: newCurrMove - 1 , state: gameState, aiRepo: aiRepo}
 };
 
-const CheckNextMove = (moveRepo, currMove, gameState) => {    
+const CheckNextMove = (moveRepo, aiRepo, currMove, gameState, vsMode) => {    
   let newCurrMove = currMove + 1  
   let recoverMove = moveRepo[newCurrMove];
   document.querySelector(`[data-row='${recoverMove.row}'][data-col='${recoverMove.col}']`).innerHTML = `${recoverMove.player}`;
   gameState[recoverMove.row][recoverMove.col] = `${recoverMove.player}`;
+
+  if (!vsMode) {
+    let recoverAIMove = aiRepo[newCurrMove - 1];
+    document.querySelector(`[data-row='${recoverAIMove.row}'][data-col='${recoverAIMove.col}']`).innerHTML = `${recoverAIMove.player}`;
+    gameState[recoverAIMove.row][recoverAIMove.col] = `${recoverAIMove.player}`;
+  }
   
-  return { currMove: newCurrMove , state: gameState}
+  return { currMove: newCurrMove , state: gameState, aiRepo: aiRepo}
 };
 
 const MapInBoard = (lastIndexClicked, direction, arrIndex) => {
@@ -134,18 +148,17 @@ const MapInPanel = (isPlayer1, player1, panelTarget, gameState) => {
   return { currState: gameState, tag: tag}; 
 }
 
-const ExecuteGameControllers = (action, moveRepo, currMove, gameState) => {
+const ExecuteGameControllers = (action, moveRepo, aiRepo, currMove, gameState, vsMode) => {
   if (action === "previous") {
-    return CheckPrevMove(moveRepo, currMove, gameState);
+    return CheckPrevMove(moveRepo, aiRepo, currMove, gameState, vsMode);
   }
 
   if (action === "next") {
-    return CheckNextMove(moveRepo, currMove, gameState);
+    return CheckNextMove(moveRepo, aiRepo, currMove, gameState, vsMode);
   }
 }
 
-const EnableGameControllers = (moveRepo, currMove, vsMode) => {
- 
+const EnableGameControllers = (moveRepo, aiRepo, currMove, vsMode) => {  
   if (moveRepo.length > 0) {
     document.querySelector(`[data-button='next']`).classList.remove('disabled-button')
     document.querySelector(`[data-button='previous']`).classList.remove('disabled-button')
@@ -156,12 +169,19 @@ const EnableGameControllers = (moveRepo, currMove, vsMode) => {
   if (currMove === 0) {
     document.querySelector(`[data-button='previous']`).classList.add('disabled-button')
     document.querySelector(`[data-button='previous']`).dataset.disable = 'true'
+
+    document.querySelector(`[data-button='next']`).classList.remove('disabled-button')
+    document.querySelector(`[data-button='next']`).dataset.disable = 'false'
   }
 
   if (currMove === moveRepo.length - 1) {
     document.querySelector(`[data-button='next']`).classList.add('disabled-button')
     document.querySelector(`[data-button='next']`).dataset.disable = 'true'
+
+    document.querySelector(`[data-button='previous']`).classList.remove('disabled-button')
+    document.querySelector(`[data-button='previous']`).dataset.disable = 'false'
   }
+
   if (moveRepo.length === 0 ) {
     document.querySelector(`[data-button='next']`).classList.add('disabled-button')
     document.querySelector(`[data-button='previous']`).classList.add('disabled-button')
@@ -169,10 +189,17 @@ const EnableGameControllers = (moveRepo, currMove, vsMode) => {
     document.querySelector(`[data-button='next']`).dataset.disable = 'true'
     document.querySelector(`[data-button='previous']`).dataset.disable = 'true'
   } 
+
+  if (!vsMode) {
+    if (aiRepo.length === currMove) {
+    document.querySelector(`[data-button='next']`).classList.add('disabled-button')
+    document.querySelector(`[data-button='next']`).dataset.disable = 'true'
+    }
+  } 
 }
 
-const StoreGameMove = ( rowIdx, colIdx, tag, currMove, moveRepo) => {
-  moveRepo[currMove] = {row: rowIdx, col: colIdx, player: tag }  
+const StoreGameMove = ( rowIdx, colIdx, tag, currMove, moveRepo) => {    
+  moveRepo[currMove] = {row: rowIdx, col: colIdx, player: tag }    
   return moveRepo
 }
 
@@ -181,6 +208,7 @@ const ResetGameBoard = () => {
   [...allPanels].forEach((panels) => {
     panels.innerHTML = "";
     panels.classList.remove('winningPanel')
+    panels.dataset.emptypanel = true
   });
   document.getElementById('declaration').innerHTML = "";
 }

@@ -68,6 +68,7 @@ const LoadGamePanel = (gameContainer, gameStateIdx) => {
   let gamePanel = Panel();
   gamePanel.setAttribute("data-row", `${gameStateIdx.rowIdx}`);
   gamePanel.setAttribute("data-col", `${gameStateIdx.colIdx}`);
+  gamePanel.setAttribute("data-emptypanel", `true`);
   gameContainer.appendChild(gamePanel);
   return gamePanel;
 };
@@ -97,15 +98,12 @@ const RemoveTicTacToeEdges = (GameState) => {
   document.querySelectorAll(`[data-row='0']`).forEach(panel => {
     panel.style.borderTop = "none";
   })
-
   document.querySelectorAll(`[data-row='${GameState.length - 1}']`).forEach(panel => {
     panel.style.borderBottom = "none";
   })
-
   document.querySelectorAll(`[data-col='0']`).forEach(panel => {
     panel.style.borderLeft = "none";
   })
-
   document.querySelectorAll(`[data-col='${GameState.length - 1}']`).forEach(panel => {
     panel.style.borderRight = "none";
   })
