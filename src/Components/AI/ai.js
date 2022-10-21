@@ -13,10 +13,13 @@ const AIPlayer = (gameState, isPlayer1, player1 ) => {
   let getCenter = GetCenter(gameState, isPlayer1, player1)    
   if (!getCenter.random) return {tag: getCenter.tag, row: getCenter.row, col: getCenter.col};
 
+  let getCorner = GetCorner(gameState, playerTag, isPlayer1, player1)    
+  if (!getCorner.random) return {tag: getCenter.tag, row: getCenter.row, col: getCenter.col};
+
   return PickRandomSlot(gameState, isPlayer1, player1)      
 }
 
-const BasicMoves = (gameState,  tag , isPlayer1, player1) => {
+const BasicMoves = (gameState, tag, isPlayer1, player1) => {
   let goRandom = false
   let selectedRow
   let selectedCol
@@ -43,6 +46,32 @@ const GetCenter = (gameState, isPlayer1, player1) => {
   if (gameState[centerRow - 1][centerCol - 1] === "") {    
     return {...AIImplementSelection(gameState, isPlayer1, player1, (centerRow - 1 ), (centerCol - 1 )), random: false}
   }
+  return {random: true}
+}
+
+const GetCorner = (gameState, playerMove, isPlayer1, player1) => { 
+  let emptyCorners = []
+  if (gameState[0][0] === "") {
+    emptyCorners.push({row: 0, col: 0})
+  }
+  if (gameState[0][gameState[0].length - 1] === "") {
+    emptyCorners.push({row: 0, col: (gameState[0].length -1)})
+  }
+  if (gameState[gameState[0].length - 1][0] === "") {
+    emptyCorners.push({row: (gameState[0].length - 1), col: 0})
+  }
+  if (gameState[gameState[0].length - 1][gameState[0].length - 1] === "") {
+    emptyCorners.push({row: (gameState[0].length - 1), col: (gameState[0].length - 1)})
+  }
+
+  let centerRow = Math.ceil(gameState.length / 2)
+  let centerCol = Math.ceil(gameState[centerRow].length / 2) 
+  
+  let randomEmptyCorner = emptyCorners[Math.floor(Math.random() * emptyCorners.length)]
+  if (gameState[centerRow - 1][centerCol - 1] === playerMove && emptyCorners.length > 0) {        
+    return {...AIImplementSelection(gameState, isPlayer1, player1, randomEmptyCorner.row, randomEmptyCorner.col), random: false}
+  }
+
   return {random: true}
 }
 
