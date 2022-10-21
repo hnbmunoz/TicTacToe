@@ -18,7 +18,7 @@ const app = () => {
   let moveRepo = [];
   let currMove = 0;
   let aiRepo = [];
-  let aiMove = 0;
+  let aiStart = false;
   let vsMode = false;
 
   document.addEventListener("click", (e) => {
@@ -32,6 +32,7 @@ const app = () => {
       isDraw = false;
       currMove = 0;
       Utility.EnableGameControllers([], [], 0, vsMode);
+      aiStart && setTimeout( () => {AIMove(gameState, isPlayer1, player1, aiRepo, 1)} , 1000) 
       return;
     }      
     if (document.querySelectorAll('.winningPanel').length > 0 || isDraw) return
@@ -72,6 +73,16 @@ const app = () => {
     document.querySelector('.welcome-panel').style.transform = "translateY(-100vh)";   
     player1 = data.player1
     vsMode = data.mode
+
+    if (!vsMode) {
+      if (Boolean(Math.round(Math.random()))) {
+        alert("AI Goes First")
+        aiStart = true
+        setTimeout( () => {AIMove(gameState, isPlayer1, player1, aiRepo, 1)} , 1000 )
+      } else {
+        alert("Player Goes First")
+      }
+    }
   }
 
   const AIMove = (gameState, isPlayer1, player1, repo, move) => {
@@ -93,7 +104,7 @@ const app = () => {
   }
 
   WelcomeScreen(PlayerSelected)
-  InitializeTicTacToe(App);
+  InitializeTicTacToe(App);    
   let darkModeSlider = Slider(ToggleDarkMode)
   darkModeSlider.setAttribute('id','darkModeSlider')
   document.body.appendChild(darkModeSlider)

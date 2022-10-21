@@ -97,16 +97,19 @@ const CheckPrevMove = (moveRepo, aiRepo, currMove, gameState, vsMode) => {
   return { currMove: newCurrMove - 1 , state: gameState, aiRepo: aiRepo}
 };
 
-const CheckNextMove = (moveRepo, aiRepo, currMove, gameState, vsMode) => {    
+const CheckNextMove = (moveRepo, aiRepo, currMove, gameState, vsMode) => {      
   let newCurrMove = currMove + 1  
   let recoverMove = moveRepo[newCurrMove];
   document.querySelector(`[data-row='${recoverMove.row}'][data-col='${recoverMove.col}']`).innerHTML = `${recoverMove.player}`;
   gameState[recoverMove.row][recoverMove.col] = `${recoverMove.player}`;
 
   if (!vsMode) {
-    let recoverAIMove = aiRepo[newCurrMove - 1];
-    document.querySelector(`[data-row='${recoverAIMove.row}'][data-col='${recoverAIMove.col}']`).innerHTML = `${recoverAIMove.player}`;
-    gameState[recoverAIMove.row][recoverAIMove.col] = `${recoverAIMove.player}`;
+    try {
+      let recoverAIMove = aiRepo[newCurrMove - 1];
+      document.querySelector(`[data-row='${recoverAIMove.row}'][data-col='${recoverAIMove.col}']`)
+        .innerHTML = `${recoverAIMove.player}`;
+      gameState[recoverAIMove.row][recoverAIMove.col] = `${recoverAIMove.player}`;
+    } catch {}
   }
   
   return { currMove: newCurrMove , state: gameState, aiRepo: aiRepo}
