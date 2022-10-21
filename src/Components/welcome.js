@@ -1,8 +1,6 @@
 import { CreateElement } from "../../utilities/utility.js";
 import { LoadPlayerSelection } from "./playerSelection.js";
 
-let vsMode = false;
-
 const WelcomeScreen = (PlayerSelected) => {    
   let showSelection  = false
   let welcome = CreateElement("div");
