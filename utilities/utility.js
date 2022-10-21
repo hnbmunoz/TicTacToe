@@ -55,7 +55,6 @@ const CheckGameOver = (gameState, player, lastIndexClicked) => {
     CheckCornerDiagonal(gameState) ||
     CheckReverseDiagonal(gameState) ||
     CheckVertical(gameState);
-
   isGameOver && (document.getElementById('declaration').innerHTML = `${player} wins`);
   isGameOver &&
     MapInBoard(lastIndexClicked, {
@@ -102,7 +101,6 @@ const CheckNextMove = (moveRepo, aiRepo, currMove, gameState, vsMode) => {
   let recoverMove = moveRepo[newCurrMove];
   document.querySelector(`[data-row='${recoverMove.row}'][data-col='${recoverMove.col}']`).innerHTML = `${recoverMove.player}`;
   gameState[recoverMove.row][recoverMove.col] = `${recoverMove.player}`;
-
   if (!vsMode) {
     try {
       let recoverAIMove = aiRepo[newCurrMove - 1];
@@ -111,7 +109,6 @@ const CheckNextMove = (moveRepo, aiRepo, currMove, gameState, vsMode) => {
       gameState[recoverAIMove.row][recoverAIMove.col] = `${recoverAIMove.player}`;
     } catch {}
   }
-  
   return { currMove: newCurrMove , state: gameState, aiRepo: aiRepo}
 };
 
@@ -176,7 +173,6 @@ const EnableGameControllers = (moveRepo, aiRepo, currMove, vsMode) => {
     document.querySelector(`[data-button='next']`).classList.remove('disabled-button')
     document.querySelector(`[data-button='next']`).dataset.disable = 'false'
   }
-
   if (currMove === moveRepo.length - 1) {
     document.querySelector(`[data-button='next']`).classList.add('disabled-button')
     document.querySelector(`[data-button='next']`).dataset.disable = 'true'
@@ -184,7 +180,6 @@ const EnableGameControllers = (moveRepo, aiRepo, currMove, vsMode) => {
     document.querySelector(`[data-button='previous']`).classList.remove('disabled-button')
     document.querySelector(`[data-button='previous']`).dataset.disable = 'false'
   }
-
   if (moveRepo.length === 0 ) {
     document.querySelector(`[data-button='next']`).classList.add('disabled-button')
     document.querySelector(`[data-button='previous']`).classList.add('disabled-button')
@@ -192,7 +187,6 @@ const EnableGameControllers = (moveRepo, aiRepo, currMove, vsMode) => {
     document.querySelector(`[data-button='next']`).dataset.disable = 'true'
     document.querySelector(`[data-button='previous']`).dataset.disable = 'true'
   } 
-
   if (!vsMode) {
     if (aiRepo.length === currMove) {
     document.querySelector(`[data-button='next']`).classList.add('disabled-button')
@@ -219,19 +213,15 @@ const ResetGameBoard = () => {
 const DarkMode = () => {
   document.querySelector('.welcome-panel').classList.toggle('dark-mode')
   document.body.classList.toggle('dark-mode')
-
   document.querySelectorAll('.controllerButton').forEach( button => {
       button.classList.toggle('dark-button')
   });
-
   document.querySelectorAll('.tictactoe-panel ').forEach( panels => {
     panels.classList.toggle('dark-panel')
   });
-
   document.querySelectorAll('.player-selection ').forEach( selection => {
     selection.classList.toggle('dark-announcement')
   });
-
   document.querySelector('.gameTitle').classList.toggle('dark-title')
   document.querySelector('#declaration').classList.toggle('dark-announcement')
   document.querySelector('.player-selection-title').classList.toggle('dark-title')

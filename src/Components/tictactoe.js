@@ -9,11 +9,11 @@ const Container = () => {
 }
 
 const Panel = () => {
- let panel = CreateElement('div')
- panel.classList.add('tictactoe-panel')
- panel.classList.add('gamePanel')
- panel.setAttribute('data-gamePanel','gamePanel')
- return panel
+  let panel = CreateElement('div')
+  panel.classList.add('tictactoe-panel')
+  panel.classList.add('gamePanel')
+  panel.setAttribute('data-gamePanel','gamePanel')
+  return panel
 }
 
 const Title = () => {

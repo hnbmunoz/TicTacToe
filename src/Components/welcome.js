@@ -22,7 +22,6 @@ const WelcomeScreen = (PlayerSelected) => {
     aiButton.classList.add('controllerButton');
     aiButton.innerHTML = "AI Mode";
     aiButton.addEventListener('click',() => {ModeSelected(false)})
-
     return aiButton;
   };
 
