@@ -34,6 +34,5 @@ const WelcomeScreen = (PlayerSelected) => {
       LoadPlayerSelection(welcome, PlayerSelected, vsMode)     
   }
 };
-//dsfdsdsfdsfdsfdsfdsfdsfsdfdsfdsfdsfhsdjfhjdkshfjkdshfkdshkfdsf
-//sdfsdfdsfdsf
+
 export { WelcomeScreen };
