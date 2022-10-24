@@ -10,6 +10,9 @@ const AIPlayer = (gameState, isPlayer1, player1 ) => {
   let preventLoss = BasicMoves(gameState, playerTag, isPlayer1, player1)
   if (!preventLoss.random) return {tag: preventLoss.tag, row: preventLoss.row, col: preventLoss.col};
 
+  let tacticalMove1 = TacticalMove1(gameState, aiTag, isPlayer1, player1)    
+  if (!tacticalMove1.random) return {tag: tacticalMove1.tag, row: tacticalMove1.row, col: tacticalMove1.col};
+
   let getCenter = GetCenter(gameState, isPlayer1, player1)    
   if (!getCenter.random) return {tag: getCenter.tag, row: getCenter.row, col: getCenter.col};
 
@@ -38,6 +41,31 @@ const BasicMoves = (gameState, tag, isPlayer1, player1) => {
     return {...AIImplementSelection(gameState, isPlayer1, player1, selectedRow, selectedCol), random: !goRandom}
   }
   return {random: !goRandom}
+}
+
+const TacticalMove1 = (gameState, aiMove, isPlayer1, player1) => {
+  let emptyCorners = []
+  if (gameState[0][0] === "") {
+    emptyCorners.push({row: 0, col: 0})
+  }
+  if (gameState[0][gameState[0].length - 1] === "") {
+    emptyCorners.push({row: 0, col: (gameState[0].length -1)})
+  }
+  if (gameState[gameState[0].length - 1][0] === "") {
+    emptyCorners.push({row: (gameState[0].length - 1), col: 0})
+  }
+  if (gameState[gameState[0].length - 1][gameState[0].length - 1] === "") {
+    emptyCorners.push({row: (gameState[0].length - 1), col: (gameState[0].length - 1)})
+  }
+  let centerRow = Math.ceil(gameState.length / 2)
+  let centerCol = Math.ceil(gameState[centerRow].length / 2) 
+  
+  let randomEmptyCorner = emptyCorners[Math.floor(Math.random() * emptyCorners.length)]
+  if (gameState[centerRow - 1][centerCol - 1] === aiMove && emptyCorners.length === 4) {        
+    return {...AIImplementSelection(gameState, isPlayer1, player1, randomEmptyCorner.row, randomEmptyCorner.col), random: false}
+  }
+
+  return {random: true}
 }
 
 const GetCenter = (gameState, isPlayer1, player1) => {
